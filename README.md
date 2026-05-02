@@ -37,7 +37,13 @@ android/       Android shell + manifest
 test/          unit tests (settlement calculator)
 ```
 
-## Setup
+## Build APK without installing Flutter
+
+GitHub Actions builds the APK on every push (`.github/workflows/build.yml`).
+See [`docs/build-instructions.md`](docs/build-instructions.md) for the
+one-time Firebase setup and how to download the artifact.
+
+## Local setup (alternative)
 
 ```bash
 flutter pub get
