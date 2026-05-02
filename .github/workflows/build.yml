@@ -32,14 +32,24 @@ jobs:
           dart --version
 
       - name: Scaffold Android shell
-        # Creates android/, web/ etc only where missing — does NOT touch lib/.
-        # Then we restore our custom AndroidManifest with the BLE/location perms.
+        # `flutter create --overwrite` regenerates pubspec.yaml, lib/main.dart,
+        # README, etc. We need it for the Android directory, so we let it
+        # overwrite, then restore our checked-in sources from git.
         run: |
           flutter create . \
             --platforms=android \
             --project-name=tour_app \
             --org=com.touraapp \
             --overwrite
+          # Restore everything that flutter create might have clobbered.
+          # Android stays as freshly-generated EXCEPT our manifest.
+          git checkout HEAD -- \
+            pubspec.yaml \
+            README.md \
+            analysis_options.yaml \
+            lib/ test/ functions/ \
+            firebase.json firestore.rules firestore.indexes.json
+          # Apply our custom AndroidManifest (BLE/location/notification perms)
           cp android/app/src/main/AndroidManifest.template.xml \
              android/app/src/main/AndroidManifest.xml
 
